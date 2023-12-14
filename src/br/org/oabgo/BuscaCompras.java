@@ -1,11 +1,9 @@
 package br.org.oabgo;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 //import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 
@@ -45,9 +43,15 @@ public class BuscaCompras implements ScheduledAction, AcaoRotinaJava {
 	}
 
 	@Override
-	public void doAction(ContextoAcao arg0) throws Exception {
+	public void doAction(ContextoAcao contexto) throws Exception {
 
 		buscar();
+
+		if (contexto.getLinhas().length > 0) {
+
+			contexto.setMensagemRetorno("Registros atualizados com sucesso!");
+
+		}
 
 	}
 
@@ -151,9 +155,13 @@ public class BuscaCompras implements ScheduledAction, AcaoRotinaJava {
 											cofryVO.setProperty("ADVERTISER", store.getAdvertiser());
 											cofryVO.setProperty("DOCUMENT", store.getDocumento());
 
-											if (store.getClientIdReceived() != null
-													|| !store.getDatePayed().equals("null")) {
-												cofryVO.setProperty("CLIENTIDRECEIVED", store.getClientIdReceived());
+											if (store.getClientIdReceived() != null) {
+
+												if (!store.getDatePayed().equals("null")) {
+													cofryVO.setProperty("CLIENTIDRECEIVED",
+															store.getClientIdReceived());
+
+												}
 
 											}
 
@@ -169,11 +177,13 @@ public class BuscaCompras implements ScheduledAction, AcaoRotinaJava {
 											cofryVO.setProperty("CUSTOMERBALANCE", store.getCustomerBalance());
 											cofryVO.setProperty("PARTNERNAME", store.getPartnerName());
 
-											if (store.getDataUltimaAtualizacao() != null
-													|| !store.getDataUltimaAtualizacao().equals("null")) {
+											if (store.getDataUltimaAtualizacao() != null) {
 
-												cofryVO.setProperty("LASTUPDATE",
-														Timestamp.valueOf(store.getDataUltimaAtualizacao()));
+												if (!store.getDataUltimaAtualizacao().equals("null")) {
+													cofryVO.setProperty("LASTUPDATE",
+															Timestamp.valueOf(store.getDataUltimaAtualizacao()));
+
+												}
 
 											}
 
@@ -181,15 +191,20 @@ public class BuscaCompras implements ScheduledAction, AcaoRotinaJava {
 
 											try {
 
-												if (!store.getDatePayed().equals("null")
-														|| store.getDatePayed() != null) {
+												if (store.getDatePayed() != null) {
 
-													cofryVO.setProperty("DATEPAYED",
-															Timestamp.valueOf(store.getDatePayed()));
+													if (!store.getDatePayed().equals("null")) {
+
+														cofryVO.setProperty("DATEPAYED",
+																Timestamp.valueOf(store.getDatePayed()));
+
+													}
 
 												}
 
 											} catch (NullPointerException e) {
+												System.out.println(
+														"Entrou no NullPointerException store.getDatePayed() :  " + e);
 
 											}
 											prePersist.setValueObject(entityVO);
@@ -207,9 +222,14 @@ public class BuscaCompras implements ScheduledAction, AcaoRotinaJava {
 										cofryVO.setProperty("IDMAD", new BigDecimal(store.getIdMad()));
 										cofryVO.setProperty("ADVERTISER", store.getAdvertiser());
 										cofryVO.setProperty("DOCUMENT", store.getDocumento());
-										if (store.getClientIdReceived() != null
-												|| !store.getDatePayed().equals("null")) {
-											cofryVO.setProperty("CLIENTIDRECEIVED", store.getClientIdReceived());
+										if (store.getClientIdReceived() != null) {
+
+											if (!store.getDatePayed().equals("null")) {
+
+												cofryVO.setProperty("CLIENTIDRECEIVED", store.getClientIdReceived());
+
+											}
+
 										}
 										cofryVO.setProperty("NAMECOMPANY", store.getNomeCompanhia());
 										cofryVO.setProperty("SITUATION", store.getDescricaoSituacao());
@@ -222,11 +242,16 @@ public class BuscaCompras implements ScheduledAction, AcaoRotinaJava {
 										cofryVO.setProperty("CASHBACKFINAL", store.getCashbackFinal());
 										cofryVO.setProperty("CUSTOMERBALANCE", store.getCustomerBalance());
 										cofryVO.setProperty("PARTNERNAME", store.getPartnerName());
-										
-										if (store.getDataUltimaAtualizacao() != null
-												|| !store.getDataUltimaAtualizacao().equals("null")) {
-										cofryVO.setProperty("LASTUPDATE",
-												Timestamp.valueOf(store.getDataUltimaAtualizacao()));
+
+										if (store.getDataUltimaAtualizacao() != null) {
+
+											if (!store.getDataUltimaAtualizacao().equals("null")) {
+
+												cofryVO.setProperty("LASTUPDATE",
+														Timestamp.valueOf(store.getDataUltimaAtualizacao()));
+
+											}
+
 										}
 										cofryVO.setProperty("PAYED", new BigDecimal(store.getPayed()));
 										try {

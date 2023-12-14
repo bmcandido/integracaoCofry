@@ -45,10 +45,17 @@ public class CofryUtil {
             multipart.addFormField("endDate", dataFinal);
             multipart.addFormField("token", tokenApiCofry);
             
+            System.out.println("*************************************");
+            System.out.println("O problema pode estár por aqui");
+            System.out.println("*************************************");
             
-            System.out.println("O problema está começando aqui");
-            String response = multipart.finish();            
-            System.out.println("response: " + response.toString() );
+            
+            String response = multipart.finish();  
+            
+            System.out.println("*************************************");
+            System.out.println("response COFRY : " + response.toString() );
+            System.out.println("*************************************");
+            
 			return gson.fromJson( response , CofryCargaVendaDTO.class);
 
 		} catch (Exception e) {
